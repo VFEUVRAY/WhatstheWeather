@@ -18,14 +18,14 @@ public class Controller {
     public CityAdapter cityAdapter;
     private CityModel cityModel;
 
-    private Controller(Context context) {
+    private Controller() {
         this.cityModel = null;
         Controller._instance = this;
     }
 
-    public static Controller get(Context context) {
+    public static Controller get() {
         if (Controller._instance == null) {
-            return new Controller(context);
+            return new Controller();
         }
         return (Controller) Controller._instance;
     }
@@ -35,5 +35,9 @@ public class Controller {
 
         }
         return this.cityModel.get_list();
+    }
+
+    public boolean cityForm_submit(String name, String country, String ra) {
+        return this.cityModel.add(name, country, ra);
     }
 }

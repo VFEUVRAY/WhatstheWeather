@@ -20,6 +20,7 @@ public class CityFormActivity extends AppCompatActivity implements View.OnClickL
     private EditText nameEdit;
     private EditText countryEdit;
     private EditText raEdit;
+    private Controller controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +31,20 @@ public class CityFormActivity extends AppCompatActivity implements View.OnClickL
         this.nameEdit = this.findViewById(R.id.editText_cityName);
         this.countryEdit = this.findViewById(R.id.editText_Country);
         this.raEdit = this.findViewById(R.id.editText_RA);
+        this.controller = Controller.get();
         this.setResult(0);
         this.finish();
     }
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.btn_Submit:
+                this.submit();
+                break;
+            default:
+                break;
+        }
     }
 
     public void submit() {

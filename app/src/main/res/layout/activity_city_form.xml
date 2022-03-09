@@ -29,6 +29,8 @@
         android:ems="10"
         android:hint="Nom (ex: Paris)"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/editText_Country"
         app:layout_constraintStart_toStartOf="@+id/textView_formTitle"
         app:layout_constraintTop_toBottomOf="@+id/textView_formTitle" />
@@ -38,8 +40,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Raison (ex: Capitale)"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/btn_Submit"
         app:layout_constraintStart_toStartOf="@+id/editText_Country"
         app:layout_constraintTop_toBottomOf="@+id/editText_Country" />
@@ -49,8 +53,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Pays (ex: France)"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/editText_RA"
         app:layout_constraintStart_toStartOf="@+id/editText_cityName"
         app:layout_constraintTop_toBottomOf="@+id/editText_cityName" />
