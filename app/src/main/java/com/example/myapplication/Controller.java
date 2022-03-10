@@ -7,6 +7,7 @@ import com.example.myapplication.cities.CityAdapter;
 import com.example.myapplication.cities.CityModel;
 
 import java.util.List;
+import java.util.Locale;
 
 public class Controller {
     /*
@@ -30,14 +31,26 @@ public class Controller {
         return (Controller) Controller._instance;
     }
 
+    public void init_cities(Context context) {
+        if (this.cityModel == null)
+            this.cityModel = new CityModel();
+        this.cityModel._seed(context);
+    }
+
+    public boolean cities_country_exists(String country) {
+        return this.cityModel.get_available_countries().contains(country.toLowerCase(Locale.ROOT));
+    }
+
     public List<City> cities_getList() {
         if (this.cityModel == null){
-
+            this.cityModel = new CityModel();
         }
         return this.cityModel.get_list();
     }
 
     public boolean cityForm_submit(String name, String country, String ra) {
-        return this.cityModel.add(name, country, ra);
+        if (name.length() == 0 || country.length() == 0 || ra.length() == 0)
+            return false;
+        return this.cityModel.add_favorite(name, country, ra);
     }
 }

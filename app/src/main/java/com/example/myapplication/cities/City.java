@@ -64,13 +64,12 @@ public class City implements Serializable {
     public boolean equals(@NonNull City city) {
         boolean equal = city._name.toLowerCase(Locale.ROOT).equals(this._name.toLowerCase(Locale.ROOT));
         equal = equal && city._country.toLowerCase(Locale.ROOT).equals(this._country.toLowerCase(Locale.ROOT));
-        return equal && city._capital.toLowerCase(Locale.ROOT).equals(this._capital.toLowerCase(Locale.ROOT));
+        return equal;
     }
 
     public boolean equals(String name, String country, String ra) {
         return (this._name.toLowerCase(Locale.ROOT).equals(name.toLowerCase(Locale.ROOT))
                 && this._country.toLowerCase(Locale.ROOT).equals(country.toLowerCase())
-                && this._capital.toLowerCase(Locale.ROOT).equals(ra.toLowerCase(Locale.ROOT))
         );
     }
 }
