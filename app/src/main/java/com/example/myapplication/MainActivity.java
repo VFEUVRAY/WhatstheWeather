@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -19,8 +22,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.myapplication.cities.*;
+import com.example.myapplication.location.Locator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private ListView citiesView;
     private Controller controller;
     public LocationManager locationManager;
+    public Locator locationListener;
     public final int REQUEST_PERMISSION_LOCATION_CODE = 1;
 
     @Override
@@ -49,16 +55,25 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         this.cityAdapter = new CityAdapter(getApplicationContext(), this.cities);
         this.citiesView.setAdapter(this.cityAdapter);
         this.cityAdapter.notifyDataSetChanged();
+        this.initLocation();
+        this.getLast();
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
+        this.initLocation();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (this.locationManager != null && this.locationListener != null) {
+            this.locationManager.removeUpdates(this.locationListener);
+            this.locationManager = null;
+            this.locationListener = null;
+        }
     }
 
     @Override
@@ -66,14 +81,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         super.onDestroy();
     }
 
-    private void initLocation() {
-        this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        this.locationManager.
-    }
 
-    private Location getLast() {
-        return this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    }
 
     @Override
     public void onClick(View v) {
@@ -99,10 +107,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 System.out.println("Permission was not granted");
             }
         }
-    }
-
-    public void requestLocationPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_PERMISSION_LOCATION_CODE);
     }
 
     private void emptyList(View v) {
@@ -131,6 +135,58 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         });
         System.out.println("HERE");
         System.out.println("THERE");
+    }
+
+    //LOCATION
+
+    private void initLocation() {
+        this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        this.locationListener = new Locator(this);
+    }
+
+    private Location getLast() {
+        this.locationListener.check_perms(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            return this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        return null;
+    }
+
+    public void requestLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // afficher message explicant pourquoi la permission est requise
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission de géolocalisation")
+                    .setMessage("L'application a besoin de connaitre votre location pour récupérer les données météo de votre position")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            MainActivity.this.askLocationPersmission();
+                        }
+                    })
+                    .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            MainActivity.this.askLocationPersmission();
+        }
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_PERMISSION_LOCATION_CODE))
+    }
+
+    private void askLocationPersmission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_PERMISSION_LOCATION_CODE);
+    }
+
+    public void makeToast(String[] to_display) {
+        StringBuilder buff = new StringBuilder();
+
+        for (String _b : to_display) {
+            buff.append(_b);
+        }
+        Toast.makeText(getApplicationContext(), buff, Toast.LENGTH_SHORT).show();
     }
 
     public void locationChanged() {}

@@ -34,7 +34,7 @@ public class Controller {
     public void init_cities(Context context) {
         if (this.cityModel == null)
             this.cityModel = new CityModel();
-        this.cityModel._seed(context);
+        //this.cityModel._seed(context);
     }
 
     public boolean cities_country_exists(String country) {
