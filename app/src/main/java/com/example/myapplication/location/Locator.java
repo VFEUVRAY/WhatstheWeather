@@ -30,12 +30,12 @@ public class Locator implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        this._parent.locationChanged();
+        this._parent.locationChanged(location);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        LocationListener.super.onStatusChanged(provider, status, extras);
+        //LocationListener.super.onStatusChanged(provider, status, extras);
         this._parent.makeToast(new String[]{
                 "Status changed: Provider: ",
                 provider, " ; status: ",
@@ -65,7 +65,7 @@ public class Locator implements LocationListener {
                 PackageManager.PERMISSION_GRANTED) {
             this._parent.requestLocationPermission();
         } else {
-            this._parent.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, this);
+            this._parent.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
         }
     }
 

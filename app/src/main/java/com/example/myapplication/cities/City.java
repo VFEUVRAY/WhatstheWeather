@@ -18,15 +18,27 @@ public class City implements Serializable {
     @SerializedName("country")
     @Expose
     private String _country;
-    @SerializedName("capital")
+    @SerializedName("lat")
     @Expose
-    private String _capital;
+    private Double _lat;
+    @SerializedName("lon")
+    @Expose
+    private Double _lon;
 
-    public City(int id, String name, String country, String capital) {
+    public City(int id, String name, String country) {
         this._id = id;
         this._name = name;
         this._country = country;
-        this._capital = capital;
+        this._lat = null;
+        this._lon = null;
+    }
+
+    public City(int id, String name, String country, Double lat, Double lon) {
+        this._id = id;
+        this._name = name;
+        this._country = country;
+        this._lat = lat;
+        this._lon = lon;
     }
 
     public Integer get_id() {
@@ -37,13 +49,13 @@ public class City implements Serializable {
         return _name;
     }
 
-    public String get_capital() {
-        return _capital;
-    }
-
     public String get_country() {
         return _country;
     }
+
+    public Double get_lat() { return _lat; }
+
+    public Double get_lon() { return _lon; }
 
     public void set_id(Integer _id) {
         this._id = _id;
@@ -57,9 +69,9 @@ public class City implements Serializable {
         this._country = _country;
     }
 
-    public void set_capital(String _capital) {
-        this._capital = _capital;
-    }
+    public void set_lat(Double _lat) { this._lat = _lat; }
+
+    public void set_lon(Double _lon) { this._lon = _lon; }
 
     public boolean equals(@NonNull City city) {
         boolean equal = city._name.toLowerCase(Locale.ROOT).equals(this._name.toLowerCase(Locale.ROOT));
@@ -67,7 +79,7 @@ public class City implements Serializable {
         return equal;
     }
 
-    public boolean equals(String name, String country, String ra) {
+    public boolean equals(String name, String country) {
         return (this._name.toLowerCase(Locale.ROOT).equals(name.toLowerCase(Locale.ROOT))
                 && this._country.toLowerCase(Locale.ROOT).equals(country.toLowerCase())
         );

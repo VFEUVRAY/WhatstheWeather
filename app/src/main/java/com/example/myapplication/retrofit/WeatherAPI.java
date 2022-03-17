@@ -10,4 +10,5 @@ public interface WeatherAPI {
 
     @GET("changes/")
     Call<List<Change>> LoadChanges(@Query("q") String status);
+
 }

@@ -15,19 +15,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.myapplication.cities.*;
 import com.example.myapplication.location.Locator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +40,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         super.onCreate(savedInstanceState);
         this.controller = Controller.get();
         this.controller.init_cities(getApplicationContext());
+        this.controller.init_connectivity(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         this.findViewById(R.id.btn_switchActivity).setOnClickListener(this);
+        this.findViewById(R.id.btn_API).setOnClickListener(this);
 
         this.citiesView = this.findViewById(R.id.citiesView);
         this.cities = this.controller.cities_getList();
@@ -56,12 +52,18 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         this.citiesView.setAdapter(this.cityAdapter);
         this.cityAdapter.notifyDataSetChanged();
         this.initLocation();
-        this.getLast();
+        Location loc = this.getLast();
+        if (loc != null) {
+            String lat = Double.toString(loc.getLatitude());
+            String lon = Double.toString(loc.getLongitude());
+            this.makeToast(new String[] {"Location was provided: ", lat, lon});
+        } else {
+            this.makeToast(new String[]{"Location was not provided", Integer.toString(42)});
+        }
     }
 
     @Override
     protected void onResume() {
-
         super.onResume();
         this.initLocation();
     }
@@ -81,8 +83,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         super.onDestroy();
     }
 
-
-
     @Override
     public void onClick(View v) {
         int caller_id = v.getId();
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         if (caller_id == R.id.btn_switchActivity)
             this.startForm(v);
             //this.emptyList(v);
+        if (caller_id == R.id.btn_API)
+            this.test_api_call();
     }
 
     @Override
@@ -97,25 +99,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == this.REQUEST_PERMISSION_LOCATION_CODE) {
-            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                this.initLocation();
-            } else {
-                System.out.println("Permission was not granted");
-            }
-        }
-    }
+
 
     private void emptyList(View v) {
         List<City> new_list = new ArrayList<City>();
         new_list.add(new City(
                 1,
                 "Tombouktou",
-                "Congo",
-                "Caoutal"
+                "Congo"
         ));
         this.cityAdapter = new CityAdapter(getApplicationContext(), new_list);
         this.citiesView.setAdapter(this.cityAdapter);
@@ -149,6 +140,18 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             return this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         return null;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == this.REQUEST_PERMISSION_LOCATION_CODE) {
+            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                this.initLocation();
+            } else {
+                System.out.println("Permission was not granted");
+            }
+        }
     }
 
     public void requestLocationPermission() {
@@ -189,5 +192,21 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         Toast.makeText(getApplicationContext(), buff, Toast.LENGTH_SHORT).show();
     }
 
-    public void locationChanged() {}
+    public void locationChanged(Location loc) {
+        System.out.println("LOCATION CHANGED");
+        if (loc != null) {
+            String lat = Double.toString(loc.getLatitude());
+            String lon = Double.toString(loc.getLongitude());
+            this.makeToast(new String[] {"Location was provided: ", lat, lon});
+        } else {
+            this.makeToast(new String[]{"Location was not provided", Integer.toString(42)});
+        }
+    }
+
+    // API
+
+    public void test_api_call() {
+        System.out.println("TEST API CALL");
+        this.controller.is_user_online();
+    }
 }

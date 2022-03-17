@@ -30,9 +30,9 @@ public class CityAdapter extends BaseAdapter implements Serializable {
         return false;
     }
 
-    public boolean exists(String name, String country, String ra) {
+    public boolean exists(String name, String country) {
         for (City _c : this.cityList) {
-            if (_c.equals(name, country, ra))
+            if (_c.equals(name, country))
                 return true;
         }
         return false;

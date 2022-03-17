@@ -2,9 +2,6 @@ package com.example.myapplication.cities;
 
 import android.content.Context;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +49,7 @@ public class CityModel {
                 this._list.add(new City(
                         this._list.size(),
                         values.get("city_ascii"),
-                        country,
-                        values.get("capital")
+                        country
                 ));
                 if (!this._available_countries.contains(country))
                     this._available_countries.add(country.toLowerCase(Locale.ROOT));
@@ -76,7 +72,7 @@ public class CityModel {
 
     public boolean exists(String name, String country, String ra) {
         for (City _c : this._list) {
-            if (_c.equals(name, country, ra))
+            if (_c.equals(name, country))
                 return true;
         }
         return false;
@@ -84,7 +80,7 @@ public class CityModel {
 
     public City find(String name, String country) {
         for (City _c : this._list) {
-            if (_c.equals(name,country, ""))
+            if (_c.equals(name,country))
                 return _c;
         }
         return null;
@@ -93,7 +89,7 @@ public class CityModel {
     public boolean add(String name, String country, String ra) {
         if (this.exists(name, country, ra))
                 return false;
-        this._list.add(new City(this._list.size(), name, country, ra));
+        this._list.add(new City(this._list.size(), name, country));
         return true;
     }
 

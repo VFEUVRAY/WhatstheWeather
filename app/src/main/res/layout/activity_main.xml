@@ -12,9 +12,10 @@
         android:layout_width="335dp"
         android:layout_height="0dp"
         android:layout_marginEnd="18dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_switchActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_API" />
 
     <TextView
         android:id="@+id/textView4"
@@ -38,5 +39,17 @@
         app:layout_constraintBottom_toTopOf="@+id/citiesView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/btn_API"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="209dp"
+        android:layout_marginBottom="8dp"
+        android:text="API_CALL_TEST"
+        app:layout_constraintBottom_toTopOf="@+id/citiesView"
+        app:layout_constraintStart_toStartOf="@+id/btn_switchActivity"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
