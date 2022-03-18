@@ -207,6 +207,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     public void test_api_call() {
         System.out.println("TEST API CALL");
-        this.controller.is_user_online();
+        if (this.controller.is_user_online()) {
+            System.out.println("CONNECTED!!");
+            this.controller.call_fake_api();
+        } else
+            this.makeToast(new String[] {"No internet connection"});
     }
 }

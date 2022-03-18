@@ -27,6 +27,23 @@ public class F_APIController implements Callback<List<Fake>>{
     static final String T_BASE_URL = "https://jsonplaceholder.typicode.com/";
     static final String T_TODO_EXT = "todos/";
 
+    private Retrofit retrofit;
+    private FakeAPI fakeAPI;
+
+    public F_APIController() {
+        this.retrofit = null;
+        this.fakeAPI = null;
+    }
+
+    public void init() {
+        Gson gson = new GsonBuilder().setLenient().create();
+        this.retrofit = new Retrofit.Builder()
+                .baseUrl(F_APIController.T_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        this.fakeAPI = this.retrofit.create(FakeAPI.class);
+    }
+
     public void start() {
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -38,8 +55,25 @@ public class F_APIController implements Callback<List<Fake>>{
         //WeatherAPI weatherAPI = retrofit.create(WeatherAPI.class);
         FakeAPI fakeAPI = retrofit.create(FakeAPI.class);
         //Call<List<Fake>> call = weatherAPI.LoadFakes("status:open");
-        Call<List<Fake>> call = fakeAPI.LoadTodos("status:open");
+        Call<List<Fake>> call = fakeAPI.LoadTodos();
         call.enqueue(this);
+    }
+
+    public void one() {
+        Call<Fake> call = this.fakeAPI.LoadOneTodo("1");
+        call.enqueue(new Callback<Fake>() {
+            @Override
+            public void onResponse(@NonNull Call<Fake> call, Response<Fake> response) {
+                Fake fake = response.body();
+                if (fake != null)
+                    System.out.println(fake.getTitle());
+            }
+
+            @Override
+            public void onFailure(Call<Fake> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

@@ -37,7 +37,7 @@ public class APIController implements Callback<List<Change>>{
         //WeatherAPI weatherAPI = retrofit.create(WeatherAPI.class);
         FakeAPI fakeAPI = retrofit.create(FakeAPI.class);
         //Call<List<Change>> call = weatherAPI.LoadChanges("status:open");
-        Call<List<Fake>> call = fakeAPI.LoadTodos("status:open");
+        Call<List<Fake>> call = fakeAPI.LoadTodos();
         //call.enqueue(this);
     }
 
