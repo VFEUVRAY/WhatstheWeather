@@ -26,6 +26,18 @@ public class APIController implements Callback<List<Change>>{
     static final String T_BASE_URL = "https://jsonplaceholder.typicode.com/";
     static final String T_TODO_EXT = "todos/";
 
+    private Retrofit retrofit;
+    private WeatherAPI api;
+
+    public void init() {
+        Gson gson = new GsonBuilder().setLenient().create();
+        this.retrofit = new Retrofit.Builder()
+                .baseUrl(F_APIController.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        this.api = retrofit.create(WeatherAPI.class);
+    }
+
     public void start() {
         Gson gson = new GsonBuilder().setLenient().create();
 
