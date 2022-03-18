@@ -208,8 +208,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     public void test_api_call() {
         System.out.println("TEST API CALL");
         if (this.controller.is_user_online()) {
-            System.out.println("CONNECTED!!");
-            this.controller.call_fake_api();
+            Location loc = this.getLast();
+            if (loc != null) {
+                this.controller.set_pending_forecast(loc.getLatitude(), loc.getLongitude());
+                Intent intent = new Intent(this, Display_Forecast.class);
+                startActivity(intent);
+            } else
+                this.makeToast(new String[] {"Could not retrieve location"});
         } else
             this.makeToast(new String[] {"No internet connection"});
     }

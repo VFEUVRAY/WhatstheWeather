@@ -1,52 +1,47 @@
 package com.example.myapplication.Meteo;
 
-import java.util.List;
-import java.util.Map;
-
 public class Forecast {
-    private String cod;
-    private Double message;
-    private Integer cnt;
-    private List<Object> list;
-    private Map<String, Object> city;
+    private Double temp;
+    private Double wind_speed;
+    private Double wind_dir;
+    private String weather_type;
 
-    public String getCod() {
-        return cod;
+    public Forecast(Double temp, Double wind_speed, Double wind_dir, String weather_type) {
+        this.temp = temp;
+        this.weather_type = weather_type;
+        this.wind_dir = wind_dir;
+        this.wind_speed = wind_speed;
     }
 
-    public void setCod(String cod) {
-        this.cod = cod;
+    public Double getTemp() {
+        return temp;
     }
 
-    public Double getMessage() {
-        return message;
+    public void setTemp(Double temp) {
+        this.temp = temp;
     }
 
-    public void setMessage(Double message) {
-        this.message = message;
+    public Double getWind_speed() {
+        return wind_speed;
     }
 
-    public Integer getCnt() {
-        return cnt;
+    public void setWind_speed(Double wind_speed) {
+        this.wind_speed = wind_speed;
     }
 
-    public void setCnt(Integer cnt) {
-        this.cnt = cnt;
+    public Double getWind_dir() {
+        return wind_dir;
     }
 
-    public List<Object> getList() {
-        return list;
+    public void setWind_dir(Double wind_dir) {
+        this.wind_dir = wind_dir;
     }
 
-    public void setList(List<Object> list) {
-        this.list = list;
+    public String getWeather_type() {
+        return weather_type;
     }
 
-    public Map<String, Object> getCity() {
-        return city;
-    }
-
-    public void setCity(Map<String, Object> city) {
-        this.city = city;
+    public void setWeather_type(String weather_type) {
+        this.weather_type = weather_type;
     }
 }

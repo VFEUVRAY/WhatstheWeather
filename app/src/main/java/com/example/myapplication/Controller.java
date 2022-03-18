@@ -5,9 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 
+import com.example.myapplication.Meteo.Forecast;
+import com.example.myapplication.Meteo.ForecastModel;
+import com.example.myapplication.Meteo.ForecastResponse;
 import com.example.myapplication.cities.City;
 import com.example.myapplication.cities.CityAdapter;
 import com.example.myapplication.cities.CityModel;
+import com.example.myapplication.retrofit.APIController;
 import com.example.myapplication.retrofit.F_APIController;
 
 import java.util.ArrayList;
@@ -23,18 +27,27 @@ public class Controller {
     private List<Object> activities;
     public CityAdapter cityAdapter;
     private CityModel cityModel;
+    private Display_Forecast display_activity;
+    private ForecastModel forecastModel;
 
-    private F_APIController apiController;
+    private APIController apiController;
     private ConnectivityManager connectivityManager;
 
     private Boolean apiStarted;
 
+    private String pending_request;
+    private Double[] pending_request_loc;
+
     private Controller() {
         this.cityModel = null;
         Controller._instance = this;
-        this.apiController = new F_APIController();
+        this.apiController = new APIController(this);
         this.apiController.init();
         this.apiStarted = false;
+        this.display_activity = null;
+        this.pending_request = null;
+        this.pending_request_loc = new Double[] {0.0,0.0};
+        this.forecastModel = new ForecastModel(this);
     }
 
     public static Controller get() {
@@ -42,6 +55,14 @@ public class Controller {
             return new Controller();
         }
         return (Controller) Controller._instance;
+    }
+
+    public void set_display_forecast(Display_Forecast display_activity) {
+        this.display_activity = display_activity;
+    }
+
+    public void unset_display_forecast() {
+        this.display_activity = null;
     }
 
     // API
@@ -76,11 +97,31 @@ public class Controller {
         return false;
     }
 
-    public Boolean call_fake_api() {
+    public void store_forecast(ForecastResponse forecastResponse) {
+        Integer forecast_id = this.forecastModel.add_id(forecastResponse);
+        this.forecastModel.handle_forecast(forecast_id);
+    }
+
+    public Boolean set_pending_forecast(Double lat, Double lon) {
         if (this.check_api()) {
-            this.apiController.one();
+            this.pending_request_loc[0] = lat;
+            this.pending_request_loc[1] = lon;
         }
         return false;
+    }
+
+    public Boolean get_forecast_city() {
+        if (this.check_api()) {
+            this.apiController.get_forecast_from_coordinates(this.pending_request_loc[0], this.pending_request_loc[1]);
+            return true;
+        }
+        return false;
+    }
+
+    public void forecast_ready(List<Forecast> forecasts) {
+        if (this.display_activity != null) {
+            this.display_activity.display(forecasts);
+        }
     }
 
     // CITIES

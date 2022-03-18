@@ -2,12 +2,16 @@ package com.example.myapplication.retrofit;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.example.myapplication.Controller;
+import com.example.myapplication.Meteo.ForecastResponse;
 import com.example.myapplication.retrofit.test.Fake;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +32,11 @@ public class APIController implements Callback<List<Change>>{
 
     private Retrofit retrofit;
     private WeatherAPI api;
+    private Controller controller;
+
+    public APIController(Controller controller) {
+        this.controller = controller;
+    }
 
     public void init() {
         Gson gson = new GsonBuilder().setLenient().create();
@@ -36,6 +45,60 @@ public class APIController implements Callback<List<Change>>{
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         this.api = retrofit.create(WeatherAPI.class);
+    }
+
+    public void get_forecast_from_city(@NonNull String city) {
+        Call<ForecastResponse> call = this.api.getForecast(HOST, API_KEY, city);
+        call.enqueue(new Callback<ForecastResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ForecastResponse> call, @NonNull Response<ForecastResponse> response) {
+                ForecastResponse forecastResponse = response.body();
+                if (forecastResponse != null) {
+                    System.out.println(forecastResponse.getCity());
+                    APIController.this.controller.store_forecast(forecastResponse);
+                } else {
+                    System.out.println("COULD NOT GET METEO");
+                    System.out.println(response.body());
+                    try {
+                        System.out.println(response.errorBody().string());
+                    } catch (IOException e) {
+                        System.out.println("NO EXEP");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ForecastResponse> call, @NonNull Throwable t) {
+                System.out.println(t.getStackTrace());
+            }
+        });
+    }
+
+    public void get_forecast_from_coordinates(Double lat, Double lon) {
+        Call<ForecastResponse> call = this.api.getFromcastFromCoords(HOST, API_KEY, lat, lon);
+        call.enqueue(new Callback<ForecastResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ForecastResponse> call, @NonNull Response<ForecastResponse> response) {
+                ForecastResponse forecastResponse = response.body();
+                if (forecastResponse != null) {
+                    System.out.println(forecastResponse.getCity());
+                    APIController.this.controller.store_forecast(forecastResponse);
+                } else {
+                    System.out.println("COULD NOT GET METEO");
+                    System.out.println(response.body());
+                    try {
+                        System.out.println(response.errorBody().string());
+                    } catch (IOException e) {
+                        System.out.println("NO EXEP");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ForecastResponse> call, @NonNull Throwable t) {
+                System.out.println(t.getStackTrace());
+            }
+        });
     }
 
     public void start() {
