@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         this.cities = this.controller.cities_getList();
         this.cityAdapter = new CityAdapter(getApplicationContext(), this.cities);
         this.citiesView.setAdapter(this.cityAdapter);
+        this.set_city_listener();
         this.cityAdapter.notifyDataSetChanged();
         this.initLocation();
         Location loc = this.getLast();
@@ -217,5 +219,18 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 this.makeToast(new String[] {"Could not retrieve location"});
         } else
             this.makeToast(new String[] {"No internet connection"});
+    }
+
+    // CITIES
+
+    private void set_city_listener() {
+        this.citiesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MainActivity.this.controller.set_pending_forecast(i);
+                Intent intent = new Intent(MainActivity.this, Display_Forecast.class);
+                startActivity(intent);
+            }
+        });
     }
 }

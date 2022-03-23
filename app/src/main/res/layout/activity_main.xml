@@ -21,10 +21,11 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="21dp"
-        android:text="Hello World!"
+        android:text="Sélectionner une ville"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_switchActivity"
         app:layout_constraintStart_toStartOf="@+id/btn_switchActivity"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +48,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="209dp"
         android:layout_marginBottom="8dp"
-        android:text="API_CALL_TEST"
+        android:text="Ma position"
         app:layout_constraintBottom_toTopOf="@+id/citiesView"
         app:layout_constraintStart_toStartOf="@+id/btn_switchActivity"
         app:layout_constraintTop_toTopOf="parent" />

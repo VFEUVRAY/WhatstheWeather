@@ -24,6 +24,11 @@ public class City implements Serializable {
     @SerializedName("lon")
     @Expose
     private Double _lon;
+    @SerializedName("iso")
+    @Expose
+    private String iso;
+
+
 
     public City(int id, String name, String country) {
         this._id = id;
@@ -31,6 +36,16 @@ public class City implements Serializable {
         this._country = country;
         this._lat = null;
         this._lon = null;
+        this.iso = null;
+    }
+
+    public City(int id, String name, String country, String iso) {
+        this._id = id;
+        this._name = name;
+        this._country = country;
+        this._lat = null;
+        this._lon = null;
+        this.iso = iso;
     }
 
     public City(int id, String name, String country, Double lat, Double lon) {
@@ -39,6 +54,7 @@ public class City implements Serializable {
         this._country = country;
         this._lat = lat;
         this._lon = lon;
+        this.iso = null;
     }
 
     public Integer get_id() {
@@ -72,6 +88,14 @@ public class City implements Serializable {
     public void set_lat(Double _lat) { this._lat = _lat; }
 
     public void set_lon(Double _lon) { this._lon = _lon; }
+
+    public String getIso() {
+        return iso;
+    }
+
+    public void setIso(String iso) {
+        this.iso = iso;
+    }
 
     public boolean equals(@NonNull City city) {
         boolean equal = city._name.toLowerCase(Locale.ROOT).equals(this._name.toLowerCase(Locale.ROOT));

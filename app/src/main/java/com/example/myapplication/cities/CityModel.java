@@ -49,7 +49,8 @@ public class CityModel {
                 this._list.add(new City(
                         this._list.size(),
                         values.get("city_ascii"),
-                        country
+                        country,
+                        values.get("iso2")
                 ));
                 if (!this._available_countries.contains(country))
                     this._available_countries.add(country.toLowerCase(Locale.ROOT));
@@ -84,6 +85,10 @@ public class CityModel {
                 return _c;
         }
         return null;
+    }
+
+    public City get(int index) {
+        return this._list.get(index);
     }
 
     public boolean add(String name, String country, String ra) {

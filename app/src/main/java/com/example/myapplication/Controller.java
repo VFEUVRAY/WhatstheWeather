@@ -37,6 +37,7 @@ public class Controller {
 
     private String pending_request;
     private Double[] pending_request_loc;
+    private Boolean forecast_is_loc;
 
     private Controller() {
         this.cityModel = null;
@@ -46,6 +47,7 @@ public class Controller {
         this.apiStarted = false;
         this.display_activity = null;
         this.pending_request = null;
+        this.forecast_is_loc = false;
         this.pending_request_loc = new Double[] {0.0,0.0};
         this.forecastModel = new ForecastModel(this);
     }
@@ -102,17 +104,47 @@ public class Controller {
         this.forecastModel.handle_forecast(forecast_id);
     }
 
+    public void clear_pending_forecast() {
+        this.pending_request_loc[0] = 0.0;
+        this.pending_request_loc[1] = 0.0;
+        this.pending_request = null;
+        this.forecast_is_loc = false;
+    }
+
+    public Boolean set_pending_forecast(int index) {
+        if (this.check_api()) {
+            City city = this.cityModel.get(index);
+            this.pending_request = String.format(Locale.getDefault(), "%s,%s", city.get_name(), city.getIso());
+            this.forecast_is_loc = false;
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean set_pending_forecast(String city_name) {
+        if (this.check_api()) {
+            this.pending_request = city_name;
+            this.forecast_is_loc = false;
+            return true;
+        }
+        return false;
+    }
+
     public Boolean set_pending_forecast(Double lat, Double lon) {
         if (this.check_api()) {
             this.pending_request_loc[0] = lat;
             this.pending_request_loc[1] = lon;
+            this.forecast_is_loc = true;
         }
         return false;
     }
 
     public Boolean get_forecast_city() {
         if (this.check_api()) {
-            this.apiController.get_forecast_from_coordinates(this.pending_request_loc[0], this.pending_request_loc[1]);
+            if (this.forecast_is_loc)
+                this.apiController.get_forecast_from_coordinates(this.pending_request_loc[0], this.pending_request_loc[1]);
+            else
+                this.apiController.get_forecast_from_city(this.pending_request);
             return true;
         }
         return false;
@@ -129,7 +161,7 @@ public class Controller {
     public void init_cities(Context context) {
         if (this.cityModel == null)
             this.cityModel = new CityModel();
-        //this.cityModel._seed(context);
+        this.cityModel._seed(context);
     }
 
     public boolean cities_country_exists(String country) {
