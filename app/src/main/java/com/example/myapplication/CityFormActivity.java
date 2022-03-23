@@ -8,6 +8,8 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.content.Intent;
 import android.widget.TextView;
@@ -59,6 +61,7 @@ public class CityFormActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         this.findViewById(R.id.btn_Submit).setOnClickListener(this);
+        this.init_actv_country();
         //this.setResult(0);
         //this.finish();
     }
@@ -67,6 +70,14 @@ public class CityFormActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view.getId() == R.id.btn_Submit)
             this.submit();
+    }
+
+    private void init_actv_country() {
+        AutoCompleteTextView country = findViewById(R.id.actv_country);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_expandable_list_item_1,
+                new String[] {"France", "England", "Japan"});
+        country.setAdapter(adapter);
     }
 
     public void check_country_ok() {

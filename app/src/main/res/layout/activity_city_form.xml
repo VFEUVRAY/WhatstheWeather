@@ -9,12 +9,14 @@
     <TextView
         android:id="@+id/textView_formTitle"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="0dp"
         android:layout_marginStart="49dp"
+        android:layout_marginTop="85dp"
         android:layout_marginEnd="49dp"
+        android:layout_marginBottom="86dp"
         android:text="Informations de la nouvelle ville"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText_Country"
+        app:layout_constraintBottom_toTopOf="@+id/actv_country"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,34 +25,37 @@
         android:id="@+id/editText_Country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="39dp"
         android:ems="10"
         android:hint="Pays (ex: France)"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/editText_cityName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_formTitle" />
+        app:layout_constraintEnd_toEndOf="@+id/actv_country"
+        app:layout_constraintTop_toBottomOf="@+id/actv_country" />
 
     <EditText
         android:id="@+id/editText_cityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="27dp"
         android:ems="10"
         android:hint="Nom (ex: Paris)"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/editText_RA"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editText_Country"
         app:layout_constraintTop_toBottomOf="@+id/editText_Country" />
 
     <Button
         android:id="@+id/btn_Submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="84dp"
         android:text="Valider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,14 +66,27 @@
         android:id="@+id/editText_RA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="85dp"
         android:ems="10"
         android:hint="Raison (ex: Capitale)"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/btn_Submit"
+        app:layout_constraintStart_toStartOf="@+id/editText_cityName"
+        app:layout_constraintTop_toBottomOf="@+id/editText_cityName" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actv_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:completionHint="Select a country"
+        android:hint="Enter a country (ex: France)"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/editText_Country"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_cityName" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_formTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

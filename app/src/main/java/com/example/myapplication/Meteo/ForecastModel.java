@@ -62,18 +62,25 @@ public class ForecastModel {
         List<Forecast> res = new ArrayList<Forecast>();
         Map<String, Object> timeSlice;
         Double[] wind;
+        String date;
 
         if (forecastResponse != null) {
             System.out.println("RESPONSE NOT NULL");
             List<Object> infos = forecastResponse.getList();
+            Map<String, Object> city_infos = forecastResponse.getCity();
             for (Integer _i : indices) {
                 timeSlice = (Map<String, Object>) infos.get(_i);
                 wind = this.get_wind(timeSlice);
+                date = (String) timeSlice.get("dt_txt");
+                date = date.split(" ")[0];
                 res.add(new Forecast(
                         this.get_temp(timeSlice),
                         wind[0],
                         wind[1],
-                        this.get_wheather_type(timeSlice)
+                        this.get_wheather_type(timeSlice),
+                        (String) city_infos.get("name"),
+                        (String) city_infos.get("country"),
+                        date
                 ));
             }
             System.out.println("RETURNING DATA");
